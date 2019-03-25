@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# def intoGeo(borderA, borderB, borderC, borderD):
-def intoGeo():
+
+def intoGeo(borderA, borderB, borderC, borderD):
     with open('out.txt', 'r') as f:
         line = f.readline()
         li_all = []
@@ -21,25 +21,37 @@ def intoGeo():
             agent.append(thistime)
         trans.append(agent)
 
-    # the structure is already okay, just remove the "()" and turn into float
-    # for el_1 in trans:
-    #     for el_2 in el_1:
-    #         # inner = []
-    #         # pos = el_2[0][1:-1].split(",")
-    #         # inner.append(float(pos[0]))
-    #         # inner.append(float(pos[1]))
-    #         # inner.append(float(el_2[1]))
-    #         temp = el_2[0][1:-1].split(",")
-    #         print(trans[1])
-    #         el_1.append(el_1[1])
-    #         el_1[0] = temp[0]
-    #         el_1[1] = temp[1]
-    #         # print(el_1)
-    print(trans)
+    # trans structure is by now okay, below removes the "()" and turn into float
+    for agt in trans:
+        for i in range(len(agt)):
+            agt[i].append(float(agt[i][1]))
+            temp = agt[i][0][1:-1].split(',')
+            agt[i][0] = float(temp[0])
+            agt[i][1] = float(temp[1])
+
+    # turn into geo-coordinates
+    # parameters here should change on demand
+    xRate = [(borderB[0] - borderA[0])/400, (borderB[1] - borderA[1])/400]
+    yRate = [(borderB[0] - borderC[0])/400, (borderB[1] - borderC[1])/400]
+    geoCenter = [(borderA[0] + borderC[0])/2, (borderA[1] + borderC[1])/2]
+    for agt in trans:
+        for i in range(len(agt)):
+            xGeo = agt[i][0] * xRate[0] + agt[i][1] * yRate[0]
+            yGeo = agt[i][0] * xRate[1] + agt[i][1] * yRate[1]
+            agt[i][0] = xGeo + geoCenter[0]
+            agt[i][1] = yGeo + geoCenter[1]
+
+    # turn trans into final deckgl format [{'trajectory':[[x,y,t]]}]
+    res = []
+    for agt in trans:
+        res.append({'trajectory': agt})
+    res = str(res).replace("'", "\"")
+    
+    print(res)
 
 if __name__=="__main__":
-    # print(intoGeo([18.063574122393632, 59.33534103086854],
-    #               [18.063659496528416, 59.3352529905227],
-    #               [18.06380822690251, 59.33529050684259],
-    #               [18.063722852767725, 59.335378547188434]))
-    intoGeo()
+    # example below is a rough square on zebras
+    intoGeo([18.063574122393632, 59.33534103086854],
+                  [18.063659496528416, 59.3352529905227],
+                  [18.06380822690251, 59.33529050684259],
+                  [18.063722852767725, 59.335378547188434])
