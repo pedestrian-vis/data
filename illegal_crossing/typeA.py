@@ -8,9 +8,9 @@ import threading
 class Simulation:
     def __init__(self):
         self.t = 0.0
-        # via [random.randint(0,10) for i in range(10)]
-        self.seqR = [5, 3, 1, 10, 3, 10, 6, 1, 10, 4]
-        self.seqL = [5, 10, 1, 1, 6]
+        # via li = [[random.randint(0,10), i] for i in range(10)]; sum([el[0] for el in li])/len(li)
+        self.seqR = [[5, 1], [3, 2], [1, 3], [10, 4], [3, 5], [10, 6], [6, 7], [1,8], [10, 9], [4, 10]]
+        self.seqL = [[5, 1.5], [10, 3.5], [1, 5.5], [1, 7.5], [6, 9.5]]
         self.agentsR = []
         self.agentsL = []
         self.illealR = []
@@ -21,41 +21,43 @@ class Simulation:
         sim = threading.Timer(0.5, self.typeA)
         sim.start()
 
-        print('t = ' + str(self.t))
+        print('t = ' + str(self.t) + 's')
         # agents arriving
-        if self.t > 0 and int(self.t) == self.t:
-            self.agentsR.append(self.seqR[int(self.t)-1])
-        if self.t > 0 and int(self.t) == self.t and self.t % 2 == 0:
-            self.agentsL.append(self.seqL[int(self.t/2)-1])
-        print('rightBefore ' + str(self.agentsR))
-        print('leftBefore ' + str(self.agentsL))
+        for el in self.seqR:
+            if self.t == el[1]:
+                self.agentsR.append(el)
+        for el in self.seqL:
+            if self.t == el[1]:
+                self.agentsL.append(el)
         
         # if illegals in view more than threshold, runs the light
         # right
         run = []
         for i in range(len(self.agentsR)):
-            if len(self.illealR) >= self.getThre(int(self.t), 'R', self.agentsR[i]):
+            if len(self.illealR) >= self.getThre(int(self.t - self.agentsR[i][1]), 'R', self.agentsR[i][0]):
                 self.illealR.append(self.agentsR[i])
                 run.append(i)
         self.agentsR = [i for j, i in enumerate(self.agentsR) if j not in run]
         # left
         run = []
         for i in range(len(self.agentsL)):
-            if len(self.illealL) >= self.getThre(int(self.t), 'L', self.agentsL[i]):
+            if len(self.illealL) >= self.getThre(int(self.t - self.agentsL[i][1]), 'L', self.agentsL[i][0]):
                 self.illealL.append(self.agentsL[i])
                 run.append(i)
         self.agentsL = [i for j, i in enumerate(self.agentsL) if j not in run]
 
         # output in-time results
-        print('rightAfter ' + str(self.agentsR))
-        print('illegal right  ' + str(self.illealR))
-        print('leftAfter  ' + str(self.agentsL))
-        print('illegal left  ' + str(self.illealL))
+        print('Right: ' + str(len(self.illealR)) + ' run ' + str(len(self.agentsR)) + ' waiting')
+        print('Left:  ' + str(len(self.illealL)) + ' run ' + str(len(self.agentsL)) + ' waiting')
+        print('Total Illegal: ' + str(len(self.illealR) + len(self.illealL)))
+        print('RightIllegal ' + str(self.illealR))
+        print('LeftIllegal  ' + str(self.illealL))
+        print('\n')
         
         self.t += 0.5
 
         # stop simulation
-        if self.t >= 11:
+        if self.t >= 9:
             sim.cancel()
 
     def getThre(self, t: int, road: str, hurry: int) -> int:
