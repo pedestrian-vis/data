@@ -30,9 +30,9 @@ def intoGeo(borderA, borderB, borderC, borderD):
             agt[i][1] = float(temp[1])
 
     # turn into geo-coordinates
-    # parameters here should change on demand
-    xRate = [(borderB[0] - borderA[0])/400, (borderB[1] - borderA[1])/400]
-    yRate = [(borderB[0] - borderC[0])/400, (borderB[1] - borderC[1])/400]
+    # parameters (41&18) calibration fulfilled: matches (-20.4,-8.7)-(14.6,8.7) rectangle
+    xRate = [(borderC[0] - borderB[0])/41, (borderC[1] - borderB[1])/41]
+    yRate = [(borderB[0] - borderA[0])/18, (borderB[1] - borderA[1])/18]
     geoCenter = [(borderA[0] + borderC[0])/2, (borderA[1] + borderC[1])/2]
     for agt in trans:
         for i in range(len(agt)):
@@ -50,8 +50,9 @@ def intoGeo(borderA, borderB, borderC, borderD):
     print(res)
 
 if __name__=="__main__":
-    # example below is a rough square on zebras
-    intoGeo([18.063574122393632, 59.33534103086854],
-                  [18.063659496528416, 59.3352529905227],
-                  [18.06380822690251, 59.33529050684259],
-                  [18.063722852767725, 59.335378547188434])
+    # border of the simulated area
+    intoGeo(
+            [18.06409196251192, 59.33551828048482],
+            [18.064249995157855, 59.33535531252224],
+            [18.063598779214896, 59.3351910473156],
+            [18.06344074656896, 59.33535401527818])

@@ -34,14 +34,14 @@ class Simulation:
         # right
         run = []
         for i in range(len(self.agentsR)):
-            if len(self.illealR) >= self.getThre(int(self.t - self.agentsR[i][1]), 'R', self.agentsR[i][0]):
+            if len(self.illealR) + len(self.illealL) >= self.getThre(int(self.t - self.agentsR[i][1]), 'R', self.agentsR[i][0]):
                 self.illealR.append(self.agentsR[i])
                 run.append(i)
         self.agentsR = [i for j, i in enumerate(self.agentsR) if j not in run]
         # left
         run = []
         for i in range(len(self.agentsL)):
-            if len(self.illealL) >= self.getThre(int(self.t - self.agentsL[i][1]), 'L', self.agentsL[i][0]):
+            if len(self.illealR) + len(self.illealL) >= self.getThre(int(self.t - self.agentsL[i][1]), 'L', self.agentsL[i][0]):
                 self.illealL.append(self.agentsL[i])
                 run.append(i)
         self.agentsL = [i for j, i in enumerate(self.agentsL) if j not in run]
