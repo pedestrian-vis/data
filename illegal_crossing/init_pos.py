@@ -20,6 +20,12 @@ class Position:
                      [-16.6, 0.4], [-16.8, 4.3], [-15.1, -8.0], [-16.0, -6.2], [-15.6, -2.4], [-15.5, -5.4],
                      [-16.7, 6.0], [-15.6, 7.9], [-16.7, -6.4], [-14.4, -8.4], [-16.8, -4.5], [-16.4, -5.3],
                      [-16.3, 7.1], [-17.0, 1.7], [-14.7, 8.0], [-16.2, -8.1], [-17.4, 5.7], [-17.1, -5.2]]
+        self.buffer = [[0.0, -6.3], [0.5, -5.8], [-0.5, -5.8], [-0.1, -5.2], [-0.8, -5.0], [0.4, -4.1],
+                       [-0.5, -3.9], [0.5, -3.4], [-0.1, -2.9], [-0.6, -2.4], [0.0, -2.1], [0.6, -1.7],
+                       [0.4, -1.0], [-0.7, -1.0], [0.7, -0.2], [-0.1, -0.1], [-0.8, 0.1], [0.7, 0.5],
+                       [0.0, 0.7], [-0.7, 1.1], [0.5, 1.5], [0.1, 2.1], [-0.8, 2.5], [0.6, 2.7],
+                       [-0.2, 3.1], [0.8, 3.6], [-0.4, 4.1], [0.4, 4.4], [-0.4, 5.0], [0.6, 5.1],
+                       [0.0, 6.0], [0.7, 6.0], [-0.6, 6.4]]
 
     def addOneR(self):
         new_pos = [random.randint(100, 140)/10, random.randint(-87, 87)/10]
@@ -29,6 +35,15 @@ class Position:
             print(self.intoGeo(self.posR)[-1])
         else:
             self.addOneR()
+    
+    def addOneBuffer(self):
+        new_pos = [random.randint(-8, 8)/10, random.randint(45, 65)/10]
+        if all(math.sqrt((new_pos[0]-el[0])**2 + (new_pos[1]-el[1])**2) >= 0.7 for el in self.buffer):
+            self.buffer.append(new_pos)
+            print(new_pos)
+            print(self.intoGeo(self.buffer)[-1])
+        else:
+            self.addOneBuffer()
 
 
     def intoGeo(self, lst):
@@ -54,4 +69,5 @@ class Position:
 if __name__=="__main__":
     obj = Position()
     # obj.addOneR()
+    # obj.addOneBuffer()
     # print(obj.mirrorLeft())
