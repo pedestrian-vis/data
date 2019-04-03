@@ -12,11 +12,14 @@ def intoGeo(borderA, borderB, borderC, borderD):
     # prev each el in li_all represents all agent regarding the same time 
     # below each el in trans represents all time of one agent
     trans = []
-    for i in range(1, len(li_all[0])):
+    for i in range(1, len(li_all[-1])):
         agent = []
         for el in li_all:
             thistime = []
-            thistime.append(el[i])
+            if i < len(el):
+                thistime.append(el[i])
+            else:
+                thistime.append('(100,100)')
             thistime.append(el[0])
             agent.append(thistime)
         trans.append(agent)
