@@ -8,8 +8,9 @@ import threading
 class Simulation:
     def __init__(self):
         self.t = 0.0
-        # via li = [[random.randint(0,10), i] for i in range(10)]; sum([el[0] for el in li])/len(li)
+        # via li = [[random.randint(0,10), i*30] for i in range(30)]; sum([el[0] for el in li])/len(li)
         self.seqR = [[5, 1], [3, 2], [1, 3], [10, 4], [3, 5], [10, 6], [6, 7], [1,8], [10, 9], [4, 10]]
+        # via li = [[random.randint(0,10), int((2*i+1.5)*30)] for i in range(15)]; sum([el[0] for el in li])/len(li)
         self.seqL = [[5, 1.5], [10, 3.5], [1, 5.5], [1, 7.5], [6, 9.5]]
         self.agentsR = []
         self.agentsL = []
