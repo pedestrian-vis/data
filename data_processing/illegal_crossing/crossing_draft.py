@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-# Flow rates plan, per 100s:
-# 120+60, 110+55, 100+50,...,20+10, 6+3
+
+# This script was the illegal crossing simulation python draft
+# has already been transformed into RVO2 C++ simulation
+# sees https://github.com/pedestrian-vis/simulation/blob/master/pedestrian_sim/Crossing.cpp
 
 import threading
 

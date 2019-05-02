@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# transform the RVO2 simulation outputs into Deck.gl acceptable geo-coordinates
 
 def intoGeo(borderA, borderB, borderC, borderD):
     with open('out.txt', 'r') as f:
